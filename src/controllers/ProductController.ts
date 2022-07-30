@@ -33,6 +33,20 @@ class ProductController {
       return res.status(400).json({ message: err.message })
     }
   }
+
+  public async index (req: Request, res: Response): Promise<Response> {
+    try {
+      const product = await Product.find({
+        name: { $regex: req.query.name || '' },
+        category: { $regex: req.query.category || '' },
+        price: { $regex: req.query.price || '' }
+      })
+
+      return res.status(200).json(product)
+    } catch (err) {
+      return res.status(400).json({ message: err.message })
+    }
+  }
 }
 
 export default new ProductController()
