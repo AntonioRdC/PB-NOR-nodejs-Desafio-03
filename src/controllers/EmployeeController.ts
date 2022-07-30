@@ -48,6 +48,43 @@ class EmployeeController {
       return res.status(400).json({ message: err.message })
     }
   }
+
+  public async update (req: Request, res: Response): Promise<Response> {
+    const [day, month, year] = req.body.birthday.split('/')
+    const birthdayValidator = [year, month, day].join('-')
+
+    try {
+      await EmployeeValidatorUpdate.validateAsync({
+        name: req.body.name,
+        cpf: req.body.cpf,
+        office: req.body.office,
+        birthday: birthdayValidator,
+        situation: req.body.situation
+      })
+
+      const employee = await Employee.findByIdAndUpdate(
+        req.params.id,
+        { $set: req.body },
+        { returnDocument: 'after', runValidators: true }
+      )
+
+      employee.cpf = employee.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
+
+      return res.status(200).json(employee)
+    } catch (err) {
+      return res.status(400).json({ message: err.message })
+    }
+  }
+
+  public async delete (req: Request, res: Response): Promise<Response> {
+    try {
+      await Employee.findByIdAndDelete(req.params.id)
+
+      return res.status(204).json({})
+    } catch (err) {
+      return res.status(400).json({ message: err.message })
+    }
+  }
 }
 
 export default new EmployeeController()
