@@ -47,6 +47,37 @@ class ProductController {
       return res.status(400).json({ message: err.message })
     }
   }
+
+  public async update (req: Request, res: Response): Promise<Response> {
+    try {
+      await ProductValidatorUpdate.validateAsync({
+        name: req.body.name,
+        category: req.body.category,
+        price: req.body.price,
+        employee_id: req.body.employee_id
+      })
+
+      const product = await Product.findByIdAndUpdate(
+        req.params.id,
+        { $set: req.body },
+        { returnDocument: 'after', runValidators: true }
+      )
+
+      return res.status(200).json(product)
+    } catch (err) {
+      return res.status(400).json({ message: err.message })
+    }
+  }
+
+  public async delete (req: Request, res: Response): Promise<Response> {
+    try {
+      await Product.findByIdAndDelete(req.params.id)
+
+      return res.status(204).json({})
+    } catch (err) {
+      return res.status(400).json({ message: err.message })
+    }
+  }
 }
 
 export default new ProductController()
