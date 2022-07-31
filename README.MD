@@ -8,7 +8,7 @@ npm install
 yarn install
 ```
 
-First, run the development server:
+Second, run the development server:
 
 ```bash
 npm run dev
@@ -25,10 +25,24 @@ route POST '/employee'
 route GET '/employee'
 route PUT '/employee/:id'
 route DELETE '/employee/:id'
+## Values
+{
+ "name": "teste",
+ "cpf": "99999999999",
+ "office": "gerente",
+ "birthday": "30/04/2021"
+}
 
 ## Entity Product
 route POST '/product'
 route GET '/product'
 route PUT '/product/:id'
 route DELETE '/product/:id'
+## Values
+{
+ "name": "teste",
+ "category": "eletronico",
+ "price": "19.99",
+ "employee_id": "62e30f062617850d7e4e0d49"
+}
 ```
