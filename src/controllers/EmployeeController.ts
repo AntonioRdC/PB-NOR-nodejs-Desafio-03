@@ -36,11 +36,25 @@ class EmployeeController {
 
   public async index (req: Request, res: Response): Promise<Response> {
     try {
-      const employee = await Employee.find({
+      const employee = await Employee.paginate({
         name: { $regex: req.query.name || '' },
         cpf: { $regex: req.query.cpf || '' },
         office: { $regex: req.query.office || '' },
-        birthday: { $regex: req.query.birthday || '' }
+        birthday: { $regex: req.query.birthday || '' },
+        situation: { $regex: req.query.situation || '' }
+      }, {
+        customLabels: {
+          page: 'currentPage',
+          totalPages: 'totalPages',
+          limit: 'pageSize',
+          totalDocs: 'totalCount',
+          offset: false,
+          pagingCounter: false,
+          hasPrevPage: false,
+          hasNextPage: false,
+          prevPage: false,
+          nextPage: false
+        }
       })
 
       return res.status(200).json(employee)

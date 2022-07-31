@@ -36,10 +36,23 @@ class ProductController {
 
   public async index (req: Request, res: Response): Promise<Response> {
     try {
-      const product = await Product.find({
+      const product = await Product.paginate({
         name: { $regex: req.query.name || '' },
         category: { $regex: req.query.category || '' },
         price: { $regex: req.query.price || '' }
+      }, {
+        customLabels: {
+          page: 'currentPage',
+          totalPages: 'totalPages',
+          limit: 'pageSize',
+          totalDocs: 'totalCount',
+          offset: false,
+          pagingCounter: false,
+          hasPrevPage: false,
+          hasNextPage: false,
+          prevPage: false,
+          nextPage: false
+        }
       })
 
       return res.status(200).json(product)
@@ -49,6 +62,8 @@ class ProductController {
   }
 
   public async update (req: Request, res: Response): Promise<Response> {
+    req.body.price = Number(req.body.price).toFixed(2)
+
     try {
       await ProductValidatorUpdate.validateAsync({
         name: req.body.name,

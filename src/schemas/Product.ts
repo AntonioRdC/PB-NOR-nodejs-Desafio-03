@@ -1,5 +1,5 @@
-import { Schema, model, Document } from 'mongoose'
-
+import { Schema, model, Document, PaginateModel } from 'mongoose'
+import paginate from 'mongoose-paginate-v2'
 interface ProductInterface extends Document {
   name: string,
   category: string,
@@ -25,4 +25,6 @@ const ProductSchema = new Schema({
   versionKey: false
 })
 
-export default model<ProductInterface>('Product', ProductSchema)
+ProductSchema.plugin(paginate)
+
+export default model<ProductInterface, PaginateModel<ProductInterface>>('Product', ProductSchema)

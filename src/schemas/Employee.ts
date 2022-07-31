@@ -1,5 +1,5 @@
-import { Schema, model, Document } from 'mongoose'
-
+import { Schema, model, Document, PaginateModel } from 'mongoose'
+import paginate from 'mongoose-paginate-v2'
 interface EmployeeInterface extends Document {
     name: string,
     cpf: string,
@@ -35,4 +35,6 @@ const EmployeeSchema = new Schema({
   versionKey: false
 })
 
-export default model<EmployeeInterface>('Employee', EmployeeSchema)
+EmployeeSchema.plugin(paginate)
+
+export default model<EmployeeInterface, PaginateModel<EmployeeInterface>>('Employee', EmployeeSchema)

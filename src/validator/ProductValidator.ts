@@ -18,6 +18,7 @@ const ProductValidatorUpdate = Joi.object({
   price: Joi.number()
     .precision(2),
   employee_id: Joi.string()
+    .forbidden()
 })
 
 export { ProductValidatorCreate, ProductValidatorUpdate }
